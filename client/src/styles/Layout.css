@@ -1,0 +1,101 @@
+/* client/src/styles/Layout.css */
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #ffcce6;
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background-color: #ff4d94;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.back-button {
+    position: absolute;
+    left: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 60px; /* Space for bottom navbar */
+}
+
+/* Bottom Navigation Bar */
+.bottom-navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    background-color: #ffcce6;
+    border-top: 1px solid #ff99cc;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    width: 20%;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.nav-item.active {
+    color: #ff4d94;
+}
+
+.nav-item svg {
+    font-size: 22px;
+    margin-bottom: 2px;
+}
+
+.nav-label {
+    font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .navbar-title {
+        font-size: 16px;
+    }
+
+    .nav-item svg {
+        font-size: 20px;
+    }
+
+    .nav-label {
+        font-size: 10px;
+    }
+}

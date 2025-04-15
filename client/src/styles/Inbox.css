@@ -1,0 +1,20 @@
+/* client/src/styles/Inbox.css */
+.inbox-container {
+    padding: 10px;
+    background-color: #ffcce6;
+    min-height: calc(100vh - 110px);
+}
+
+.inbox-content {
+    padding: 30px 0;
+    text-align: center;
+}
+
+.empty-inbox {
+    margin-bottom: 20px;
+}
+
+.inbox-message {
+    color: #666;
+    font-size: 14px;
+}

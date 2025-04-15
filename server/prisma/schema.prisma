@@ -16,4 +16,27 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  posts     Post[]
+}
+
+model Topic {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+}
+
+model Post {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  description  String?
+  fileUrl      String
+  fileType     String // "image" or "video"
+  fileSize     Int // in bytes
+  thumbnailUrl String?
+  duration     Int? // for videos, duration in seconds
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  topicId      Int
+  topic        Topic    @relation(fields: [topicId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 }

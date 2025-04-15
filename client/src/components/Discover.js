@@ -1,7 +1,7 @@
 // client/src/components/Discover.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Spin, message } from 'antd';
+import { Spin, message, Tabs } from 'antd';
 import {
     LaptopOutlined,
     ToolOutlined,
@@ -13,9 +13,13 @@ import {
     BookOutlined,
     SmileOutlined,
     HeartOutlined,
-    StarOutlined
+    StarOutlined,
+    UserOutlined
 } from '@ant-design/icons';
+import UserSearch from './UserSearch';
 import '../styles/Discover.css';
+
+const { TabPane } = Tabs;
 
 const Discover = () => {
     const [topics, setTopics] = useState([]);
@@ -77,25 +81,38 @@ const Discover = () => {
 
     return (
         <div className="discover-container">
-            <div className="topics-grid">
-                {topics.map(topic => (
-                    <div
-                        key={topic.id}
-                        className="topic-card"
-                        onClick={() => handleTopicClick(topic.id)}
-                    >
-                        <div className="topic-icon">
-                            {getTopicIcon(topic.name)}
-                        </div>
-                        <div className="topic-content">
-                            <h3 className="topic-title">{topic.name}</h3>
-                            <p className="topic-description">
-                                {getTopicDescription(topic.name)}
-                            </p>
-                        </div>
+            <Tabs defaultActiveKey="topics" className="discover-tabs">
+                <TabPane
+                    tab={<div className="tab-icon"><StarOutlined /> Topics</div>}
+                    key="topics"
+                >
+                    <div className="topics-grid">
+                        {topics.map(topic => (
+                            <div
+                                key={topic.id}
+                                className="topic-card"
+                                onClick={() => handleTopicClick(topic.id)}
+                            >
+                                <div className="topic-icon">
+                                    {getTopicIcon(topic.name)}
+                                </div>
+                                <div className="topic-content">
+                                    <h3 className="topic-title">{topic.name}</h3>
+                                    <p className="topic-description">
+                                        {getTopicDescription(topic.name)}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </TabPane>
+                <TabPane
+                    tab={<div className="tab-icon"><UserOutlined /> People</div>}
+                    key="people"
+                >
+                    <UserSearch />
+                </TabPane>
+            </Tabs>
         </div>
     );
 };

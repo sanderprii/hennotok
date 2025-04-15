@@ -1,0 +1,43 @@
+/* client/src/styles/UserListsModal.css */
+.user-lists-modal .ant-modal-header {
+    background-color: #ff4d94;
+    border-radius: 10px 10px 0 0;
+}
+
+.user-lists-modal .ant-modal-title {
+    color: white;
+    font-weight: 500;
+}
+
+.user-lists-modal .ant-modal-close-x {
+    color: white;
+}
+
+.modal-loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.no-users {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+}
+
+.user-list-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 8px;
+}
+
+.user-list-item:hover {
+    background-color: #fff0f6;
+}
+
+.user-stats {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #666;
+}

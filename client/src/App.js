@@ -9,6 +9,7 @@ import TopicPosts from './components/TopicPosts';
 import CreatePost from './components/CreatePost';
 import Inbox from './components/Inbox';
 import Profile from './components/Profile';
+import UserProfile from './components/UserProfile';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
@@ -78,6 +79,16 @@ function App() {
                             <ProtectedRoute>
                                 <Layout>
                                     <Profile />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile/:userId"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <UserProfile />
                                 </Layout>
                             </ProtectedRoute>
                         }

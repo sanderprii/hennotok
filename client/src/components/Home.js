@@ -1,7 +1,8 @@
 // client/src/components/Home.js
 import React, { useEffect, useState, useRef } from 'react';
 import { Card, Empty, Spin, message, Modal } from 'antd';
-import { HeartOutlined, MessageOutlined, ShareAltOutlined, CloseOutlined } from '@ant-design/icons';
+import { HeartOutlined, MessageOutlined, ShareAltOutlined, CloseOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
 
 const Home = () => {
@@ -11,9 +12,10 @@ const Home = () => {
     const [imageModalVisible, setImageModalVisible] = useState(false);
     const [currentMedia, setCurrentMedia] = useState(null);
     const videoRefs = useRef({});
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetchPosts();
+        fetchFeedPosts();
     }, []);
 
     // Start playing video previews when posts are loaded
@@ -29,7 +31,7 @@ const Home = () => {
         });
     }, [posts]);
 
-    const fetchPosts = async () => {
+    const fetchFeedPosts = async () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -37,7 +39,7 @@ const Home = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:5000/api/posts', {
+            const response = await fetch('http://localhost:5000/api/posts/feed', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -77,6 +79,10 @@ const Home = () => {
         setCurrentMedia(null);
     };
 
+    const handleUserClick = (userId) => {
+        navigate(`/profile/${userId}`);
+    };
+
     // Set up video ref for a post
     const setVideoRef = (postId, element) => {
         videoRefs.current[postId] = element;
@@ -98,13 +104,22 @@ const Home = () => {
     return (
         <div className="home-container">
             {posts.length === 0 ? (
-                <Empty description="No posts found" />
+                <div className="empty-feed-container">
+                    <Empty description="No posts from people you follow" />
+                    <p className="empty-feed-message">
+                        Follow users to see their posts here, or explore new content
+                        in the Discover tab.
+                    </p>
+                </div>
             ) : (
                 <div className="post-feed">
                     {posts.map(post => (
                         <div key={post.id} className="post-item">
                             <div className="post-header">
-                                <div className="post-user">
+                                <div
+                                    className="post-user"
+                                    onClick={() => handleUserClick(post.user.id)}
+                                >
                                     <div className="user-avatar">
                                         {post.user.username.charAt(0).toUpperCase()}
                                     </div>

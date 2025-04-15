@@ -1,7 +1,7 @@
 // client/src/components/CreatePost.js
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Input, Button, Select, message, Progress, Typography } from 'antd';
-import { UploadOutlined, VideoCameraOutlined, PictureOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Select, message, Progress, Typography, Alert } from 'antd';
+import { UploadOutlined, VideoCameraOutlined, PictureOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import '../styles/CreatePost.css';
 
@@ -18,6 +18,7 @@ const CreatePost = () => {
     const [uploading, setUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [validationError, setValidationError] = useState(null);
+    const [processingWarnings, setProcessingWarnings] = useState([]);
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
@@ -54,6 +55,7 @@ const CreatePost = () => {
     const handleFileChange = async (e) => {
         const selectedFile = e.target.files[0];
         setValidationError(null);
+        setProcessingWarnings([]);
 
         if (!selectedFile) return;
 
@@ -66,13 +68,21 @@ const CreatePost = () => {
             return;
         }
 
-        // Check file size
-        if (isImage && selectedFile.size > 2 * 1024 * 1024) {
-            setValidationError('Image size exceeds 2MB limit');
-            return;
+        // Check file size - now just warning instead of error
+        if (selectedFile.size > 2 * 1024 * 1024) {
+            if (isImage) {
+                setProcessingWarnings(prev => [...prev, 'Image is larger than 2MB and will be automatically compressed. Some quality loss may occur.']);
+            } else {
+                setProcessingWarnings(prev => [...prev, 'Video is larger than 2MB and will be automatically compressed. Some quality loss may occur.']);
+            }
         }
 
-        // For videos, check duration
+        // Show special warning for very large files
+        if (selectedFile.size > 200 * 1024 * 1024) {
+            setProcessingWarnings(prev => [...prev, 'Your file is very large (over 200MB). Upload and processing may take a long time.']);
+        }
+
+        // For videos, check duration - now just warning instead of error
         if (isVideo) {
             const video = document.createElement('video');
             video.preload = 'metadata';
@@ -80,17 +90,10 @@ const CreatePost = () => {
             video.onloadedmetadata = () => {
                 window.URL.revokeObjectURL(video.src);
                 if (video.duration > 60) {
-                    setValidationError('Video duration exceeds 60 seconds limit');
-                    setFile(null);
-                    setPreview(null);
-                    setFileType(null);
-                    if (fileInputRef.current) {
-                        fileInputRef.current.value = '';
-                    }
-                } else {
-                    setFile(selectedFile);
-                    setFileType(isImage ? 'image' : 'video');
+                    setProcessingWarnings(prev => [...prev, `Video is ${Math.round(video.duration)} seconds long and will be trimmed to the first 60 seconds.`]);
                 }
+                setFile(selectedFile);
+                setFileType('video');
             };
 
             video.src = URL.createObjectURL(selectedFile);
@@ -163,6 +166,7 @@ const CreatePost = () => {
                     setFile(null);
                     setPreview(null);
                     setFileType(null);
+                    setProcessingWarnings([]);
                     navigate('/profile');
                 } else {
                     const errorData = JSON.parse(xhr.responseText);
@@ -244,9 +248,33 @@ const CreatePost = () => {
                     </div>
                 )}
 
+                {processingWarnings.length > 0 && (
+                    <div className="processing-warnings">
+                        {processingWarnings.map((warning, index) => (
+                            <Alert
+                                key={index}
+                                message="Processing Notice"
+                                description={warning}
+                                type="warning"
+                                showIcon
+                                icon={<InfoCircleOutlined />}
+                                style={{ marginBottom: '10px' }}
+                            />
+                        ))}
+                    </div>
+                )}
+
                 {uploading && (
                     <div className="progress-container">
-                        <Progress percent={uploadProgress} status="active" />
+                        <Progress
+                            percent={uploadProgress}
+                            status="active"
+                            format={percent => (
+                                <span>
+                                    {percent}% {processingWarnings.length > 0 ? '(Processing...)' : ''}
+                                </span>
+                            )}
+                        />
                     </div>
                 )}
 

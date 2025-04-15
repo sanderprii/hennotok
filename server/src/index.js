@@ -13,6 +13,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+    // Disable request timeout for large file uploads
+    req.setTimeout(3600000); // 1 hour in milliseconds
+    next();
+});
+
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 

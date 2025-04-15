@@ -5,6 +5,7 @@ const {
     getAllTopics,
     getUserPosts,
     getAllPosts,
+    getFeedPosts,
     getPostsByTopic,
     getTopicById
 } = require('../controllers/postController');
@@ -33,6 +34,9 @@ router.get('/user', authenticateToken, getUserPosts);
 
 // Get posts by topic ID
 router.get('/topic/:topicId', getAllPosts);
+
+// Get feed posts (from followed users)
+router.get('/feed', authenticateToken, getFeedPosts);
 
 // Get all posts (can be filtered by topic)
 router.get('/', getAllPosts);

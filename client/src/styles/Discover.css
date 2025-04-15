@@ -12,6 +12,33 @@
     height: 300px;
 }
 
+.discover-tabs {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.discover-tabs .ant-tabs-nav {
+    margin-bottom: 10px;
+}
+
+.discover-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #ff4d94;
+    font-weight: 500;
+}
+
+.discover-tabs .ant-tabs-ink-bar {
+    background-color: #ff4d94;
+}
+
+.tab-icon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .topics-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

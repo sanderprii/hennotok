@@ -14,9 +14,25 @@ model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String
+  bio       String?  @default("Bio description goes here...")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   posts     Post[]
+
+  // Added relationships for follows
+  followers Follow[] @relation("follower")
+  following Follow[] @relation("following")
+}
+
+// New model for follows relationship
+model Follow {
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User     @relation("following", fields: [followingId], references: [id])
+  followingId Int
+  createdAt   DateTime @default(now())
+
+  @@id([followerId, followingId])
 }
 
 model Topic {

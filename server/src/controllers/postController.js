@@ -65,9 +65,10 @@ const getAllTopics = async (req, res) => {
 const getUserPosts = async (req, res) => {
     try {
         const userId = req.user.id;
+        const targetUserId = req.query.userId ? parseInt(req.query.userId) : userId;
 
         const posts = await prisma.post.findMany({
-            where: { userId },
+            where: { userId: targetUserId },
             include: {
                 topic: true
             },
@@ -78,6 +79,45 @@ const getUserPosts = async (req, res) => {
     } catch (error) {
         console.error('Get user posts error:', error);
         res.status(500).json({ error: 'Server error retrieving posts' });
+    }
+};
+
+// Get feed posts (from followed users only)
+const getFeedPosts = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // Get IDs of users that current user follows
+        const following = await prisma.follow.findMany({
+            where: { followerId: userId },
+            select: { followingId: true }
+        });
+
+        const followingIds = following.map(f => f.followingId);
+
+        // Get posts from followed users or own posts if not following anyone
+        const where = followingIds.length > 0
+            ? { userId: { in: followingIds } }
+            : {}; // If not following anyone, return all posts
+
+        const posts = await prisma.post.findMany({
+            where,
+            include: {
+                topic: true,
+                user: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        res.status(200).json(posts);
+    } catch (error) {
+        console.error('Get feed posts error:', error);
+        res.status(500).json({ error: 'Server error retrieving feed posts' });
     }
 };
 
@@ -162,6 +202,7 @@ module.exports = {
     getAllTopics,
     getUserPosts,
     getAllPosts,
+    getFeedPosts,
     getPostsByTopic,
     getTopicById
 };

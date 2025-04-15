@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './components/SignUp';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -9,9 +12,17 @@ function App() {
             <div className="App">
                 <Routes>
                     <Route path="/signup" element={<SignUp />} />
-                    {/* Login component will be added in future */}
-                    <Route path="/login" element={<div>Login page will be added with the next user story</div>} />
-                    <Route path="*" element={<Navigate to="/signup" replace />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+                    <Route path="*" element={<Navigate to="/login" replace />} />
                 </Routes>
             </div>
         </Router>

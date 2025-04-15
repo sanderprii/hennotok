@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-const { hashPassword } = require('../utils/passwordUtils');
+const { hashPassword, comparePassword } = require('../utils/passwordUtils');
+const jwt = require('jsonwebtoken');
 
 const prisma = new PrismaClient();
 
@@ -41,6 +42,48 @@ const registerUser = async (req, res) => {
     }
 };
 
+// Login user
+const loginUser = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Check if user exists
+        const user = await prisma.user.findUnique({
+            where: { username },
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        // Verify password
+        const isPasswordValid = await comparePassword(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        // Return user data and token
+        res.status(200).json({
+            id: user.id,
+            username: user.username,
+            token,
+            message: 'Login successful',
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Server error during login' });
+    }
+};
+
 module.exports = {
     registerUser,
+    loginUser,
 };

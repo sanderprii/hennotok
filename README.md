@@ -1,12 +1,15 @@
-# User Registration Application
+# User Authentication Application
 
-A clean, modern user registration application with a responsive design built using React, Node.js, and SQLite.
-
+A clean, modern user authentication application with a responsive design built using React, Node.js, and SQLite.
 
 
 ## Features
 
 - User registration with validations
+- User login with authentication
+- Session management with JWT
+- Protected routes for authenticated users
+- Dashboard for logged-in users
 - Secure password storage with bcrypt
 - Responsive design (works on mobile and desktop)
 - Modern UI with Ant Design components
@@ -27,6 +30,7 @@ A clean, modern user registration application with a responsive design built usi
 - Prisma (ORM)
 - SQLite
 - bcrypt for password hashing
+- JWT for authentication
 
 ## Project Structure
 
@@ -36,9 +40,14 @@ my-app/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
-│   │   │   └── SignUp.jsx     # Registration form
+│   │   │   ├── SignUp.jsx     # Registration form
+│   │   │   ├── Login.jsx      # Login form
+│   │   │   ├── Dashboard.jsx  # User dashboard
+│   │   │   └── ProtectedRoute.jsx # Route protection
 │   │   ├── styles/
-│   │   │   └── SignUp.css     # Registration form styles
+│   │   │   ├── SignUp.css     # Registration form styles
+│   │   │   ├── Login.css      # Login form styles
+│   │   │   └── Dashboard.css  # Dashboard styles
 │   │   ├── App.jsx
 │   │   └── index.jsx
 ├── server/                     # Backend Node.js application
@@ -50,7 +59,8 @@ my-app/
 │   │   ├── routes/
 │   │   │   └── userRoutes.js
 │   │   ├── middleware/
-│   │   │   └── validation.js
+│   │   │   ├── validation.js
+│   │   │   └── auth.js
 │   │   ├── utils/
 │   │   │   └── passwordUtils.js
 │   │   └── index.js          # Server entry point
@@ -66,13 +76,7 @@ Follow these steps to set up the project:
 
 ### Setup Steps
 
-1. Clone the repository
-   ```bash
-   git clone <repository-url>
-   cd my-app
-   ```
-
-2. Install dependencies
+1. Install dependencies
    ```bash
    # Install root dependencies
    npm install
@@ -84,7 +88,7 @@ Follow these steps to set up the project:
    cd ../server && npm install
    ```
 
-3. Set up environment variables
+2. Set up environment variables
    ```bash
    # In the server directory
    cd server
@@ -95,7 +99,7 @@ Follow these steps to set up the project:
    PORT=5000" > .env
    ```
 
-4. Initialize the database
+3. Initialize the database
    ```bash
    npx prisma migrate dev --name init
    npx prisma generate
@@ -128,6 +132,26 @@ npm start
 | Method | Endpoint           | Description      | Request Body                                         | Response                                   |
 |--------|-------------------|------------------|----------------------------------------------------|-------------------------------------------|
 | POST   | /api/users/register | Register new user | `{ username, password, confirmPassword }`           | `{ id, username, createdAt, message }`    |
+| POST   | /api/users/login    | Login user        | `{ username, password }`                             | `{ id, username, token, message }`         |
+
+## Authentication Flow
+
+1. **User Registration**:
+    - User submits registration form with username and password
+    - Server validates input and stores hashed credentials
+    - User is redirected to login
+
+2. **User Login**:
+    - User submits login credentials
+    - Server verifies credentials and issues JWT token
+    - Token is stored in localStorage
+    - User is redirected to dashboard
+
+3. **Session Management**:
+    - Protected routes check for valid token
+    - Unauthorized access redirects to login
+    - Dashboard displays user-specific information
+    - Logout clears token and redirects to login
 
 ## Form Validation Rules
 
@@ -155,12 +179,12 @@ npm start
 
 ## Future Development
 
-- Login functionality
-- User profile management
 - Email verification
 - Password reset functionality
-- User dashboard
-- Authentication with JWT
+- User profile management
+- Remember me functionality
+- Social login options
+- User roles and permissions
 
 ## License
 

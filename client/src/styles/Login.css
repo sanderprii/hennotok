@@ -1,0 +1,60 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #ffcce6;
+}
+
+.login-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ff4d94;
+    font-weight: bold;
+}
+
+.login-button {
+    background-color: #ff4d94;
+    border-color: #ff4d94;
+    height: 45px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.login-button:hover,
+.login-button:focus {
+    background-color: #ff66a3;
+    border-color: #ff66a3;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.signup-link a {
+    color: #ff4d94;
+    font-weight: 500;
+}
+
+/* Ant Design Form Label Override */
+.ant-form-item-label > label {
+    color: #ff4d94;
+}
+
+/* Responsiveness */
+@media (max-width: 576px) {
+    .login-card {
+        margin: 0 20px;
+        padding: 20px;
+    }
+}

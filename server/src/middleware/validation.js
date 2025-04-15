@@ -20,6 +20,19 @@ const validateSignUp = (req, res, next) => {
     next();
 };
 
+// Middleware to validate login data
+const validateLogin = (req, res, next) => {
+    const { username, password } = req.body;
+
+    // Check if all fields are provided
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    next();
+};
+
 module.exports = {
-    validateSignUp
+    validateSignUp,
+    validateLogin
 };

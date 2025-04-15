@@ -119,13 +119,16 @@ const TopicPosts = () => {
     }
 
     return (
+<div>
+    <div className="topic-header">
+        <button className="back-button" onClick={handleBack}>
+            <ArrowLeftOutlined />
+        </button>
+
+    </div>
         <div className="topic-posts-container">
-            <div className="topic-header">
-                <button className="back-button" onClick={handleBack}>
-                    <ArrowLeftOutlined />
-                </button>
-                <h2 className="topic-title">{topic ? topic.name : 'Topic'}</h2>
-            </div>
+
+            <h2 className="topic-title">{topic ? topic.name : 'Topic'}</h2>
 
             {posts.length === 0 ? (
                 <Empty description={`No posts found in ${topic ? topic.name : 'this topic'}`} />
@@ -245,6 +248,7 @@ const TopicPosts = () => {
                 </div>
             </Modal>
         </div>
+</div>
     );
 };
 

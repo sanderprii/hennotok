@@ -3,6 +3,10 @@
     padding: 10px;
     background-color: #ffcce6;
     min-height: calc(100vh - 110px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .loading-container {
@@ -20,6 +24,10 @@
 }
 
 .post-item {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+
     background-color: white;
     border-radius: 10px;
     overflow: hidden;

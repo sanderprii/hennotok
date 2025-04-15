@@ -3,6 +3,10 @@
     padding: 10px;
     background-color: #ffcce6;
     min-height: calc(100vh - 110px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .loading-container {
@@ -43,6 +47,8 @@
 .post-feed {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+
     gap: 15px;
     padding-bottom: 60px; /* Space for bottom navbar */
 }

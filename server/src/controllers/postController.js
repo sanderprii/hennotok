@@ -70,7 +70,13 @@ const getUserPosts = async (req, res) => {
         const posts = await prisma.post.findMany({
             where: { userId: targetUserId },
             include: {
-                topic: true
+                topic: true,
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
+                }
             },
             orderBy: { createdAt: 'desc' }
         });
@@ -109,9 +115,37 @@ const getFeedPosts = async (req, res) => {
                         id: true,
                         username: true
                     }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
                 }
             },
             orderBy: { createdAt: 'desc' }
+        });
+
+        // Check if user has liked each post
+        const postIds = posts.map(post => post.id);
+
+        const userLikes = await prisma.like.findMany({
+            where: {
+                userId: userId,
+                postId: {
+                    in: postIds
+                }
+            },
+            select: {
+                postId: true
+            }
+        });
+
+        const likedPostIds = userLikes.map(like => like.postId);
+
+        // Add isLiked flag to each post
+        posts.forEach(post => {
+            post.isLiked = likedPostIds.includes(post.id);
         });
 
         res.status(200).json(posts);
@@ -137,10 +171,41 @@ const getAllPosts = async (req, res) => {
                         id: true,
                         username: true
                     }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
                 }
             },
             orderBy: { createdAt: 'desc' }
         });
+
+        // Check if user has liked each post
+        if (req.user) {
+            const userId = req.user.id;
+            const postIds = posts.map(post => post.id);
+
+            const userLikes = await prisma.like.findMany({
+                where: {
+                    userId: userId,
+                    postId: {
+                        in: postIds
+                    }
+                },
+                select: {
+                    postId: true
+                }
+            });
+
+            const likedPostIds = userLikes.map(like => like.postId);
+
+            // Add isLiked flag to each post
+            posts.forEach(post => {
+                post.isLiked = likedPostIds.includes(post.id);
+            });
+        }
 
         res.status(200).json(posts);
     } catch (error) {
@@ -165,10 +230,41 @@ const getPostsByTopic = async (req, res) => {
                         id: true,
                         username: true
                     }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
                 }
             },
             orderBy: { createdAt: 'desc' }
         });
+
+        // Check if user has liked each post
+        if (req.user) {
+            const userId = req.user.id;
+            const postIds = posts.map(post => post.id);
+
+            const userLikes = await prisma.like.findMany({
+                where: {
+                    userId: userId,
+                    postId: {
+                        in: postIds
+                    }
+                },
+                select: {
+                    postId: true
+                }
+            });
+
+            const likedPostIds = userLikes.map(like => like.postId);
+
+            // Add isLiked flag to each post
+            posts.forEach(post => {
+                post.isLiked = likedPostIds.includes(post.id);
+            });
+        }
 
         res.status(200).json(posts);
     } catch (error) {
@@ -197,6 +293,56 @@ const getTopicById = async (req, res) => {
     }
 };
 
+// Get a specific post by ID
+const getPostById = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const userId = req.user?.id;
+
+        const post = await prisma.post.findUnique({
+            where: { id: parseInt(postId) },
+            include: {
+                topic: true,
+                user: {
+                    select: {
+                        id: true,
+                        username: true
+                    }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
+                }
+            }
+        });
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Check if user has liked the post
+        if (userId) {
+            const like = await prisma.like.findUnique({
+                where: {
+                    userId_postId: {
+                        userId: userId,
+                        postId: parseInt(postId)
+                    }
+                }
+            });
+
+            post.isLiked = !!like;
+        }
+
+        res.status(200).json(post);
+    } catch (error) {
+        console.error('Get post by ID error:', error);
+        res.status(500).json({ error: 'Server error retrieving post' });
+    }
+};
+
 module.exports = {
     createPost,
     getAllTopics,
@@ -204,5 +350,6 @@ module.exports = {
     getAllPosts,
     getFeedPosts,
     getPostsByTopic,
-    getTopicById
+    getTopicById,
+    getPostById
 };

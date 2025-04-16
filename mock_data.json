@@ -1,0 +1,240 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johndoe",
+      "password": "$2b$10$XdUEVt8Vr4YzWEPJ1Mb8eeJLjgWQ9KYTlS.rYW/kLzwP.XzX5jKPy",
+      "bio": "Travel enthusiast and photographer",
+      "createdAt": "2023-01-15T10:30:00.000Z",
+      "updatedAt": "2023-01-15T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "username": "janedoe",
+      "password": "$2b$10$XdUEVt8Vr4YzWEPJ1Mb8eeJLjgWQ9KYTlS.rYW/kLzwP.XzX5jKPy",
+      "bio": "Food blogger and cooking enthusiast",
+      "createdAt": "2023-01-20T14:45:00.000Z",
+      "updatedAt": "2023-01-20T14:45:00.000Z"
+    },
+    {
+      "id": 3,
+      "username": "mikebrown",
+      "password": "$2b$10$XdUEVt8Vr4YzWEPJ1Mb8eeJLjgWQ9KYTlS.rYW/kLzwP.XzX5jKPy",
+      "bio": "Fitness coach and health advocate",
+      "createdAt": "2023-02-05T09:15:00.000Z",
+      "updatedAt": "2023-02-05T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "username": "sarahsmith",
+      "password": "$2b$10$XdUEVt8Vr4YzWEPJ1Mb8eeJLjgWQ9KYTlS.rYW/kLzwP.XzX5jKPy",
+      "bio": "Tech enthusiast and software developer",
+      "createdAt": "2023-02-10T16:20:00.000Z",
+      "updatedAt": "2023-02-10T16:20:00.000Z"
+    },
+    {
+      "id": 5,
+      "username": "alexwilson",
+      "password": "$2b$10$XdUEVt8Vr4YzWEPJ1Mb8eeJLjgWQ9KYTlS.rYW/kLzwP.XzX5jKPy",
+      "bio": "Music lover and guitarist",
+      "createdAt": "2023-03-01T11:10:00.000Z",
+      "updatedAt": "2023-03-01T11:10:00.000Z"
+    }
+  ],
+  "topics": [
+    { "id": 1, "name": "Travel" },
+    { "id": 2, "name": "Food" },
+    { "id": 3, "name": "Fitness" },
+    { "id": 4, "name": "Pets" },
+    { "id": 5, "name": "Fashion" },
+    { "id": 6, "name": "Technology" },
+    { "id": 7, "name": "Art" },
+    { "id": 8, "name": "Music" },
+    { "id": 9, "name": "Nature" },
+    { "id": 10, "name": "Gaming" }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "topicId": 1,
+      "description": "Amazing sunset at the beach! #travel #sunset",
+      "fileUrl": "/uploads/images/beach_sunset.jpg",
+      "fileType": "image",
+      "fileSize": 1024000,
+      "thumbnailUrl": "/uploads/thumbnails/beach_sunset_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-04-10T18:30:00.000Z",
+      "updatedAt": "2023-04-10T18:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "topicId": 2,
+      "description": "Homemade pasta recipe! So delicious! #food #cooking",
+      "fileUrl": "/uploads/images/homemade_pasta.jpg",
+      "fileType": "image",
+      "fileSize": 1548000,
+      "thumbnailUrl": "/uploads/thumbnails/homemade_pasta_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-04-15T12:45:00.000Z",
+      "updatedAt": "2023-04-15T12:45:00.000Z"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "topicId": 3,
+      "description": "Quick 15-minute HIIT workout you can do at home! #fitness #workout",
+      "fileUrl": "/uploads/videos/hiit_workout.mp4",
+      "fileType": "video",
+      "fileSize": 5120000,
+      "thumbnailUrl": "/uploads/thumbnails/hiit_workout_thumb.jpg",
+      "duration": 45,
+      "createdAt": "2023-04-20T09:15:00.000Z",
+      "updatedAt": "2023-04-20T09:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "topicId": 6,
+      "description": "Just built my first React app! #coding #technology",
+      "fileUrl": "/uploads/images/react_app.jpg",
+      "fileType": "image",
+      "fileSize": 890000,
+      "thumbnailUrl": "/uploads/thumbnails/react_app_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-04-25T14:20:00.000Z",
+      "updatedAt": "2023-04-25T14:20:00.000Z"
+    },
+    {
+      "id": 5,
+      "userId": 5,
+      "topicId": 8,
+      "description": "New guitar cover! Check it out! #music #guitar",
+      "fileUrl": "/uploads/videos/guitar_cover.mp4",
+      "fileType": "video",
+      "fileSize": 6250000,
+      "thumbnailUrl": "/uploads/thumbnails/guitar_cover_thumb.jpg",
+      "duration": 60,
+      "createdAt": "2023-05-01T16:30:00.000Z",
+      "updatedAt": "2023-05-01T16:30:00.000Z"
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "topicId": 9,
+      "description": "Hiking in the mountains! Beautiful views! #nature #hiking",
+      "fileUrl": "/uploads/images/mountain_hike.jpg",
+      "fileType": "image",
+      "fileSize": 1320000,
+      "thumbnailUrl": "/uploads/thumbnails/mountain_hike_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-05-05T11:45:00.000Z",
+      "updatedAt": "2023-05-05T11:45:00.000Z"
+    },
+    {
+      "id": 7,
+      "userId": 2,
+      "topicId": 2,
+      "description": "Trying out a new dessert recipe! #food #dessert",
+      "fileUrl": "/uploads/images/dessert.jpg",
+      "fileType": "image",
+      "fileSize": 980000,
+      "thumbnailUrl": "/uploads/thumbnails/dessert_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-05-10T19:20:00.000Z",
+      "updatedAt": "2023-05-10T19:20:00.000Z"
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "topicId": 3,
+      "description": "5 stretches to improve flexibility #fitness #stretching",
+      "fileUrl": "/uploads/videos/stretching.mp4",
+      "fileType": "video",
+      "fileSize": 4800000,
+      "thumbnailUrl": "/uploads/thumbnails/stretching_thumb.jpg",
+      "duration": 50,
+      "createdAt": "2023-05-15T08:10:00.000Z",
+      "updatedAt": "2023-05-15T08:10:00.000Z"
+    },
+    {
+      "id": 9,
+      "userId": 4,
+      "topicId": 6,
+      "description": "My new home office setup! #technology #homeoffice",
+      "fileUrl": "/uploads/images/home_office.jpg",
+      "fileType": "image",
+      "fileSize": 1150000,
+      "thumbnailUrl": "/uploads/thumbnails/home_office_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-05-20T13:30:00.000Z",
+      "updatedAt": "2023-05-20T13:30:00.000Z"
+    },
+    {
+      "id": 10,
+      "userId": 5,
+      "topicId": 8,
+      "description": "Just got these new headphones! Sound quality is amazing! #music #tech",
+      "fileUrl": "/uploads/images/headphones.jpg",
+      "fileType": "image",
+      "fileSize": 920000,
+      "thumbnailUrl": "/uploads/thumbnails/headphones_thumb.jpg",
+      "duration": null,
+      "createdAt": "2023-05-25T17:45:00.000Z",
+      "updatedAt": "2023-05-25T17:45:00.000Z"
+    }
+  ],
+  "follows": [
+    {
+      "followerId": 1,
+      "followingId": 2,
+      "createdAt": "2023-03-10T10:00:00.000Z"
+    },
+    {
+      "followerId": 1,
+      "followingId": 3,
+      "createdAt": "2023-03-15T11:30:00.000Z"
+    },
+    {
+      "followerId": 2,
+      "followingId": 1,
+      "createdAt": "2023-03-12T14:20:00.000Z"
+    },
+    {
+      "followerId": 2,
+      "followingId": 4,
+      "createdAt": "2023-03-18T09:45:00.000Z"
+    },
+    {
+      "followerId": 3,
+      "followingId": 1,
+      "createdAt": "2023-03-20T16:15:00.000Z"
+    },
+    {
+      "followerId": 3,
+      "followingId": 5,
+      "createdAt": "2023-03-25T13:10:00.000Z"
+    },
+    {
+      "followerId": 4,
+      "followingId": 2,
+      "createdAt": "2023-04-01T11:05:00.000Z"
+    },
+    {
+      "followerId": 4,
+      "followingId": 5,
+      "createdAt": "2023-04-05T15:30:00.000Z"
+    },
+    {
+      "followerId": 5,
+      "followingId": 3,
+      "createdAt": "2023-04-10T10:20:00.000Z"
+    },
+    {
+      "followerId": 5,
+      "followingId": 4,
+      "createdAt": "2023-04-15T12:40:00.000Z"
+    }
+  ]
+}

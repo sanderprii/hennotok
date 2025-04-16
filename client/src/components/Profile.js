@@ -170,9 +170,9 @@ const Profile = () => {
         <div className="profile-container">
             <div className="profile-header">
                 <div className="profile-avatar">
-                    {user.username.charAt(0).toUpperCase()}
+                    {user && user.username ? user.username.charAt(0).toUpperCase() : ''}
                 </div>
-                <h2 className="profile-username">{user.username}</h2>
+                <h2 className="profile-username">{user && user.username ? user.username : ''}</h2>
                 <p className="profile-bio">Bio description goes here...</p>
 
                 <div className="profile-stats">

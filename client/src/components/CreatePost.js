@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Button, Select, message, Progress, Typography, Alert } from 'antd';
 import { UploadOutlined, VideoCameraOutlined, PictureOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import '../styles/CreatePost.css';
 
 const { TextArea } = Input;
@@ -26,7 +27,7 @@ const CreatePost = () => {
         // Fetch topics when component mounts
         const fetchTopics = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/posts/topics');
+                const response = await fetch(`${API_BASE_URL}/api/posts/topics`);
                 const data = await response.json();
 
                 if (response.ok) {
@@ -147,7 +148,7 @@ const CreatePost = () => {
         try {
             // Create a mock XMLHttpRequest to track upload progress
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:5000/api/posts/create');
+            xhr.open('POST', `${API_BASE_URL}/api/posts/create`);
             xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
             xhr.upload.onprogress = (event) => {

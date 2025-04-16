@@ -17,6 +17,7 @@ import {
     UserOutlined
 } from '@ant-design/icons';
 import UserSearch from './UserSearch';
+import { API_BASE_URL } from '../config';
 import '../styles/Discover.css';
 
 const { TabPane } = Tabs;
@@ -32,7 +33,7 @@ const Discover = () => {
 
     const fetchTopics = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/posts/topics');
+            const response = await fetch(`${API_BASE_URL}/api/posts/topics`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch topics');

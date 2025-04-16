@@ -1,0 +1,75 @@
+/* client/src/styles/CommentSection.css */
+.comment-section {
+    margin-top: 10px;
+}
+
+.comment-input-container {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.comment-input-container .ant-input {
+    border-radius: 20px;
+}
+
+.view-comments-button {
+    color: #8c8c8c;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.view-comments-button:hover {
+    text-decoration: underline;
+}
+
+.comments-list {
+    margin-top: 10px;
+}
+
+.comments-loading {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #8c8c8c;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comment-username {
+    font-weight: 500;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #8c8c8c;
+}
+
+.comment-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.edit-comment-container {
+    margin-top: 8px;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}

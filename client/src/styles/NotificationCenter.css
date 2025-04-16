@@ -1,0 +1,64 @@
+/* client/src/styles/NotificationCenter.css */
+.notification-button {
+    padding: 4px 8px;
+    font-size: 18px;
+}
+
+.notification-dropdown {
+    width: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.notification-loading {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.notification-list {
+    padding: 0 8px;
+}
+
+.notification-item {
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f5f5f5;
+}
+
+.notification-item.unread {
+    background-color: #e6f7ff;
+}
+
+.notification-item.unread:hover {
+    background-color: #d9f2ff;
+}
+
+.ant-list-item-meta-title {
+    margin-bottom: 0 !important;
+}
+
+.ant-list-item-meta-description {
+    font-size: 12px;
+}

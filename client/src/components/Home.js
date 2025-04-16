@@ -1,9 +1,12 @@
 // client/src/components/Home.js
 import React, { useEffect, useState, useRef } from 'react';
 import { Card, Empty, Spin, message, Modal } from 'antd';
-import { HeartOutlined, MessageOutlined, ShareAltOutlined, CloseOutlined, UserOutlined } from '@ant-design/icons';
+import { ShareAltOutlined, CloseOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import LikeButton from './LikeButton';
+import CommentSection from './CommentSection';
 import '../styles/Home.css';
+import { API_BASE_URL } from '../config';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
@@ -39,7 +42,7 @@ const Home = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:5000/api/posts/feed', {
+            const response = await fetch(`${API_BASE_URL}/api/posts/feed`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -59,13 +62,19 @@ const Home = () => {
         }
     };
 
-    const handleVideoClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
+    const handlePostClick = (post) => {
+        navigate(`/post/${post.id}`);
+    };
+
+    const handleVideoClick = (post, e) => {
+        e.stopPropagation(); // Prevent navigation to post detail
+        setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
         setVideoModalVisible(true);
     };
 
-    const handleImageClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
+    const handleImageClick = (post, e) => {
+        e.stopPropagation(); // Prevent navigation to post detail
+        setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
         setImageModalVisible(true);
     };
 
@@ -114,7 +123,7 @@ const Home = () => {
             ) : (
                 <div className="post-feed">
                     {posts.map(post => (
-                        <div key={post.id} className="post-item">
+                        <div key={post.id} className="post-item" onClick={() => handlePostClick(post)}>
                             <div className="post-header">
                                 <div
                                     className="post-user"
@@ -131,10 +140,10 @@ const Home = () => {
                                 {post.fileType === 'image' ? (
                                     <div
                                         className="post-image-container"
-                                        onClick={() => handleImageClick(post)}
+                                        onClick={(e) => handleImageClick(post, e)}
                                     >
                                         <img
-                                            src={`http://localhost:5000${post.fileUrl}`}
+                                            src={`${API_BASE_URL}${post.fileUrl}`}
                                             alt="Post"
                                             className="post-image"
                                         />
@@ -142,12 +151,12 @@ const Home = () => {
                                 ) : (
                                     <div
                                         className="post-video-container"
-                                        onClick={() => handleVideoClick(post)}
+                                        onClick={(e) => handleVideoClick(post, e)}
                                     >
                                         <video
                                             ref={(el) => setVideoRef(post.id, el)}
                                             className="post-video"
-                                            src={`http://localhost:5000${post.fileUrl}`}
+                                            src={`${API_BASE_URL}${post.fileUrl}`}
                                             muted
                                             loop
                                             playsInline
@@ -161,17 +170,13 @@ const Home = () => {
 
                             <div className="post-footer">
                                 <div className="post-actions">
-                                    <div className="action-item">
-                                        <HeartOutlined />
-                                        <span className="action-count">0</span>
-                                    </div>
-                                    <div className="action-item">
-                                        <MessageOutlined />
-                                        <span className="action-count">0</span>
-                                    </div>
+                                    <LikeButton
+                                        postId={post.id}
+                                        initialLiked={post.isLiked || false}
+                                        initialCount={post._count?.likes || 0}
+                                    />
                                     <div className="action-item">
                                         <ShareAltOutlined />
-                                        <span className="action-count">0</span>
                                     </div>
                                 </div>
                                 <div className="post-info">
@@ -180,6 +185,12 @@ const Home = () => {
                                         <div className="post-description">{post.description}</div>
                                     )}
                                 </div>
+
+                                {/* Comment section */}
+                                <CommentSection
+                                    postId={post.id}
+                                    initialCommentCount={post._count?.comments || 0}
+                                />
                             </div>
                         </div>
                     ))}

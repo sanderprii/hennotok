@@ -22,6 +22,13 @@ model User {
   // Added relationships for follows
   followers Follow[] @relation("follower")
   following Follow[] @relation("following")
+
+  // Added relationships for likes, comments, and notifications
+  likes        Like[]
+  comments     Comment[]
+  commentLikes CommentLike[]
+  notifications Notification[] @relation("recipient")
+  sentNotifications Notification[] @relation("sender")
 }
 
 // New model for follows relationship
@@ -55,4 +62,76 @@ model Post {
   topicId      Int
   topic        Topic    @relation(fields: [topicId], references: [id])
   user         User     @relation(fields: [userId], references: [id])
+
+  // Added relationships for likes and comments
+  likes        Like[]
+  comments     Comment[]
+}
+
+// Model for likes
+model Like {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  postId    Int
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  // Ensure a user can only like a post once
+  @@unique([userId, postId])
+}
+
+// Model for comments
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+
+  // Self-relation for comment replies (optional feature)
+  parentId  Int?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+
+  // For comment likes (optional feature)
+  likes     CommentLike[]
+}
+
+// Model for comment likes (optional feature)
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  commentId Int
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id])
+
+  // Ensure a user can only like a comment once
+  @@unique([userId, commentId])
+}
+
+// Model for notifications
+model Notification {
+  id          Int      @id @default(autoincrement())
+  type        String   // e.g., "like", "comment", "follow"
+  recipientId Int
+  senderId    Int
+  postId      Int?
+  commentId   Int?
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  recipient   User     @relation("recipient", fields: [recipientId], references: [id])
+  sender      User     @relation("sender", fields: [senderId], references: [id])
 }

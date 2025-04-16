@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Typography, Layout, message, Card, Empty, Spin, Modal } from 'antd';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import { API_BASE_URL } from '../config';
 import '../styles/Dashboard.css';
 
 const { Header, Content } = Layout;
@@ -34,7 +35,7 @@ const Dashboard = () => {
         // Fetch user's posts
         const fetchPosts = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/posts/user', {
+                const response = await fetch(`${API_BASE_URL}/api/posts/user`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -84,12 +85,12 @@ const Dashboard = () => {
     };
 
     const handleVideoClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
+        setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
         setVideoModalVisible(true);
     };
 
     const handleImageClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
+        setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
         setImageModalVisible(true);
     };
 
@@ -162,7 +163,7 @@ const Dashboard = () => {
                                             >
                                                 <img
                                                     alt="Post thumbnail"
-                                                    src={`http://localhost:5000${post.thumbnailUrl}`}
+                                                    src={`${API_BASE_URL}${post.thumbnailUrl}`}
                                                 />
                                                 <div className="image-overlay">
                                                     <span>👁️</span>
@@ -176,7 +177,7 @@ const Dashboard = () => {
                                                 <video
                                                     ref={(el) => setVideoRef(post.id, el)}
                                                     className="video-preview"
-                                                    src={`http://localhost:5000${post.fileUrl}`}
+                                                    src={`${API_BASE_URL}${post.fileUrl}`}
                                                     muted
                                                     loop
                                                     playsInline

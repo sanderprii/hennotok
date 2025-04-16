@@ -7,7 +7,8 @@ const {
     getAllPosts,
     getFeedPosts,
     getPostsByTopic,
-    getTopicById
+    getTopicById,
+    getPostById
 } = require('../controllers/postController');
 const { authenticateToken } = require('../middleware/auth');
 const { upload, validateFile } = require('../middleware/upload');
@@ -40,5 +41,8 @@ router.get('/feed', authenticateToken, getFeedPosts);
 
 // Get all posts (can be filtered by topic)
 router.get('/', getAllPosts);
+
+// Get a specific post by ID
+router.get('/:postId', authenticateToken, getPostById);
 
 module.exports = router;

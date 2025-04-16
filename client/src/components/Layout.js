@@ -13,6 +13,7 @@ import {
     MessageFilled,
     IdcardFilled
 } from '@ant-design/icons';
+import NotificationCenter from './NotificationCenter';
 import '../styles/Layout.css';
 
 const Layout = ({ children }) => {
@@ -44,20 +45,22 @@ const Layout = ({ children }) => {
         <div className="app-layout">
             {/* Top Navigation Bar */}
             <div className="top-navbar">
-                {pathname !== '/create-post' && (
-                    <div className="navbar-title">{getPageTitle()}</div>
-                )}
-                {pathname === '/create-post' && (
-                    <>
+                <div className="navbar-left">
+                    {pathname === '/create-post' && (
                         <button
                             className="back-button"
                             onClick={() => navigate(-1)}
                         >
                             ←
                         </button>
-                        <div className="navbar-title">{getPageTitle()}</div>
-                    </>
-                )}
+                    )}
+                    <div className="navbar-title">{getPageTitle()}</div>
+                </div>
+                <div className="navbar-right">
+                    {pathname !== '/login' && pathname !== '/signup' && (
+                        <NotificationCenter />
+                    )}
+                </div>
             </div>
 
             {/* Main Content */}

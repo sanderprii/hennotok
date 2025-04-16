@@ -10,6 +10,7 @@ import CreatePost from './components/CreatePost';
 import Inbox from './components/Inbox';
 import Profile from './components/Profile';
 import UserProfile from './components/UserProfile';
+import PostDetail from './components/PostDetail';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
@@ -89,6 +90,16 @@ function App() {
                             <ProtectedRoute>
                                 <Layout>
                                     <UserProfile />
+                                </Layout>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/post/:postId"
+                        element={
+                            <ProtectedRoute>
+                                <Layout>
+                                    <PostDetail />
                                 </Layout>
                             </ProtectedRoute>
                         }

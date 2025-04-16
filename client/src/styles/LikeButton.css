@@ -1,0 +1,39 @@
+/* client/src/styles/LikeButton.css */
+.like-button-container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.like-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.like-button.liked {
+    color: #ff4d4f;
+}
+
+.like-button.liked:hover {
+    background-color: rgba(255, 77, 79, 0.1);
+}
+
+.like-count {
+    font-size: 14px;
+    margin-left: 4px;
+}
+
+.like-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}

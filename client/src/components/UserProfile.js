@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Tabs, Button, Spin, Empty, message, Modal } from 'antd';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import UserListsModal from './UserListsModal';
+import { API_BASE_URL } from '../config';
 import '../styles/Profile.css';
 
 const { TabPane } = Tabs;
@@ -47,7 +48,7 @@ const UserProfile = () => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/api/users/${userId}/profile`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${userId}/profile`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -77,7 +78,7 @@ const UserProfile = () => {
             }
 
             const method = profile.isFollowing ? 'DELETE' : 'POST';
-            const response = await fetch(`http://localhost:5000/api/users/follow/${userId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/follow/${userId}`, {
                 method,
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -107,14 +108,19 @@ const UserProfile = () => {
         }
     };
 
-    const handleVideoClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
-        setVideoModalVisible(true);
+    const handlePostNavigation = (post) => {
+        navigate(`/post/${post.id}`);
     };
 
-    const handleImageClick = (post) => {
-        setCurrentMedia(`http://localhost:5000${post.fileUrl}`);
-        setImageModalVisible(true);
+    // Add media preview functionality to the post detail view
+    const openMediaPreview = (post) => {
+        if (post.fileType === 'video') {
+            setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
+            setVideoModalVisible(true);
+        } else {
+            setCurrentMedia(`${API_BASE_URL}${post.fileUrl}`);
+            setImageModalVisible(true);
+        }
     };
 
     const handleCloseVideoModal = () => {
@@ -227,26 +233,39 @@ const UserProfile = () => {
                                 <div
                                     key={post.id}
                                     className="post-thumbnail"
-                                    onClick={() => post.fileType === 'video' ?
-                                        handleVideoClick(post) : handleImageClick(post)}
+                                    onClick={() => handlePostNavigation(post)}
                                 >
                                     {post.fileType === 'video' ? (
                                         <>
                                             <video
                                                 ref={(el) => setVideoRef(post.id, el)}
                                                 className="thumbnail-video"
-                                                src={`http://localhost:5000${post.fileUrl}`}
+                                                src={`${API_BASE_URL}${post.fileUrl}`}
                                                 muted
                                                 loop
                                                 playsInline
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    openMediaPreview(post);
+                                                }}
                                             />
-                                            <div className="play-indicator">▶</div>
+                                            <div
+                                                className="play-indicator"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    openMediaPreview(post);
+                                                }}
+                                            >▶</div>
                                         </>
                                     ) : (
                                         <img
-                                            src={`http://localhost:5000${post.thumbnailUrl}`}
+                                            src={`${API_BASE_URL}${post.thumbnailUrl}`}
                                             alt="Post thumbnail"
                                             className="thumbnail-image"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openMediaPreview(post);
+                                            }}
                                         />
                                     )}
                                 </div>

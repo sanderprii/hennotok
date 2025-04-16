@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Button, List, Avatar, Spin, message, Tooltip, Modal } from 'antd';
 import { SendOutlined, HeartOutlined, HeartFilled, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { formatDistanceToNow } from 'date-fns';
+import { API_BASE_URL } from '../config';
 import '../styles/CommentSection.css';
 
 const { TextArea } = Input;
@@ -34,7 +35,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/api/comments/posts/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/posts/${postId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -56,7 +57,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
 
     const handleSubmitComment = async () => {
         if (!newComment.trim()) return;
-        
+
         setSubmitting(true);
         try {
             const token = localStorage.getItem('token');
@@ -65,7 +66,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/api/comments/posts/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/posts/${postId}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -79,7 +80,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
             }
 
             const data = await response.json();
-            
+
             // If not expanded, expand to show comments
             if (!expanded) {
                 setExpanded(true);
@@ -87,7 +88,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 // Add new comment to the list
                 setComments(prevComments => [data, ...prevComments]);
             }
-            
+
             setNewComment('');
             message.success('Comment posted successfully');
         } catch (error) {
@@ -107,7 +108,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
             }
 
             const method = isLiked ? 'DELETE' : 'POST';
-            const response = await fetch(`http://localhost:5000/api/likes/comments/${commentId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/likes/comments/${commentId}`, {
                 method,
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -119,7 +120,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
             }
 
             // Update comment in state
-            setComments(prevComments => 
+            setComments(prevComments =>
                 prevComments.map(comment => {
                     if (comment.id === commentId) {
                         return {
@@ -127,8 +128,8 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                             isLiked: !isLiked,
                             _count: {
                                 ...comment._count,
-                                likes: isLiked 
-                                    ? comment._count.likes - 1 
+                                likes: isLiked
+                                    ? comment._count.likes - 1
                                     : comment._count.likes + 1
                             }
                         };
@@ -149,7 +150,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
 
     const submitEditComment = async () => {
         if (!editText.trim()) return;
-        
+
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -157,7 +158,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/api/comments/${editingComment}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/${editingComment}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -171,14 +172,14 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
             }
 
             const updatedComment = await response.json();
-            
+
             // Update comment in state
-            setComments(prevComments => 
-                prevComments.map(comment => 
+            setComments(prevComments =>
+                prevComments.map(comment =>
                     comment.id === editingComment ? updatedComment : comment
                 )
             );
-            
+
             setEditingComment(null);
             setEditText('');
             message.success('Comment updated successfully');
@@ -201,7 +202,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/api/comments/${commentToDelete}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/${commentToDelete}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -211,12 +212,12 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
             if (!response.ok) {
                 throw new Error('Failed to delete comment');
             }
-            
+
             // Remove comment from state
-            setComments(prevComments => 
+            setComments(prevComments =>
                 prevComments.filter(comment => comment.id !== commentToDelete)
             );
-            
+
             setDeleteModalVisible(false);
             setCommentToDelete(null);
             message.success('Comment deleted successfully');
@@ -233,7 +234,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
     const renderCommentActions = (comment) => {
         const user = JSON.parse(localStorage.getItem('user'));
         const isOwner = user && user.id === comment.userId;
-        
+
         const actions = [
             <Tooltip key="like" title={comment.isLiked ? "Unlike" : "Like"}>
                 <span onClick={() => handleLikeComment(comment.id, comment.isLiked)}>
@@ -242,7 +243,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 </span>
             </Tooltip>
         ];
-        
+
         if (isOwner) {
             actions.push(
                 <Tooltip key="edit" title="Edit">
@@ -253,7 +254,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                 </Tooltip>
             );
         }
-        
+
         return actions;
     };
 
@@ -276,14 +277,14 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                     disabled={!newComment.trim()}
                 />
             </div>
-            
+
             {/* Toggle comments button */}
             {initialCommentCount > 0 && !expanded && (
                 <div className="view-comments-button" onClick={toggleExpanded}>
                     View all {initialCommentCount} comments
                 </div>
             )}
-            
+
             {/* Comments list */}
             {expanded && (
                 <div className="comments-list">
@@ -326,15 +327,15 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                                                             maxLength={500}
                                                         />
                                                         <div className="edit-buttons">
-                                                            <Button 
-                                                                size="small" 
+                                                            <Button
+                                                                size="small"
                                                                 onClick={() => setEditingComment(null)}
                                                             >
                                                                 Cancel
                                                             </Button>
-                                                            <Button 
-                                                                type="primary" 
-                                                                size="small" 
+                                                            <Button
+                                                                type="primary"
+                                                                size="small"
                                                                 onClick={submitEditComment}
                                                                 disabled={!editText.trim()}
                                                             >
@@ -354,7 +355,7 @@ const CommentSection = ({ postId, initialCommentCount = 0 }) => {
                     )}
                 </div>
             )}
-            
+
             {/* Delete confirmation modal */}
             <Modal
                 title="Delete Comment"

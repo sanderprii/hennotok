@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { message } from 'antd';
+import { API_BASE_URL } from '../config';
 import '../styles/LikeButton.css';
 
 const LikeButton = ({ postId, initialLiked = false, initialCount = 0, onLikeChange }) => {
@@ -11,7 +12,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, onLikeChan
 
     const handleLikeToggle = async () => {
         if (isLoading) return;
-        
+
         setIsLoading(true);
         try {
             const token = localStorage.getItem('token');
@@ -21,7 +22,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, onLikeChan
             }
 
             const method = isLiked ? 'DELETE' : 'POST';
-            const response = await fetch(`http://localhost:5000/api/likes/posts/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/likes/posts/${postId}`, {
                 method,
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -36,7 +37,7 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, onLikeChan
             const newLikedState = !isLiked;
             setIsLiked(newLikedState);
             setLikeCount(prevCount => newLikedState ? prevCount + 1 : prevCount - 1);
-            
+
             // Notify parent component
             if (onLikeChange) {
                 onLikeChange(newLikedState, newLikedState ? likeCount + 1 : likeCount - 1);
@@ -51,8 +52,8 @@ const LikeButton = ({ postId, initialLiked = false, initialCount = 0, onLikeChan
 
     return (
         <div className="like-button-container">
-            <button 
-                className={`like-button ${isLiked ? 'liked' : ''}`} 
+            <button
+                className={`like-button ${isLiked ? 'liked' : ''}`}
                 onClick={handleLikeToggle}
                 disabled={isLoading}
             >
